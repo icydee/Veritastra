@@ -1,10 +1,10 @@
-package RPG::Veratistra::Queue;
+package RPG::Veritastra::Queue;
 
 use Moose;
 use Beanstalk::Client;
 use Data::Dumper;
 
-use Veritastra::Queue::Job;
+use RPG::Veritastra::Queue::Job;
 
 has '_beanstalk' => (
     is          => 'ro',

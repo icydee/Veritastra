@@ -18,6 +18,6 @@
             "port"  : "11211"
         }
     ],
-    "server_url" : "http://localhost:5000/"
+    "server_url" : "http://le.icydee.com:8080/"
 }
 

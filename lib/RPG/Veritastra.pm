@@ -1,8 +1,10 @@
 package RPG::Veritastra;
 
 use strict;
+use lib '/data/Veritastra/lib';
 use Module::Find qw(useall);
-use Lacuna::DB;
+use RPG::Veritastra::DB;
+use RPG::Veritastra::Queue;
 use Config::JSON;
 
 useall __PACKAGE__;
