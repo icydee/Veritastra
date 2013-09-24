@@ -1,0 +1,97 @@
+=head1 Introduction
+
+This document introduces you to the Veritastra game server Application Program Interface (API).
+
+=head1 JSON-RPC
+
+Veritastra uses a JSON-RPC 2.0 based API. You can read more about JSON-RPC 2.0 at L<http://json-rpc.org/>
+and all of these methods can be accessed either as HTTP POSTs or GETs.
+
+=head1 HTTP GET
+
+Here is an example of a HTTP GET method. You can access this from your browser.
+
+  http://game.veritastra.com/player?jsonrpc=2.0&id=1&method=is_name_available&params={"name" : "Veritastra"}
+
+The C<http://game.veritastra.com> part gets you to the server.
+
+The C</player> part allows interaction with the L<Player> module. (See below for a full list)
+
+The C<jsonrpc=2.0&id=1> is required by all calls to make it JSON-RPC 2.0 compatible.
+
+The method you call in the Module is in the C<method=is_name_available> part.
+
+Finally pass in any parameters required by the call, in this case C<params={"name" : "Veritastra"}>.
+
+Note that all parameters are 'named' parameters and as such are not position dependent.
+
+B<NOTE:> You must URL encode the params. If you do not, you will get a parse error from the server.
+
+=head2 HTTP POST
+
+Most programming languages will have a JSON-RPC 2.0 client that you can either use directly
+or download. These will use the POST method, but if you had to create a post by hand it might
+look something like this.
+
+  POST,http://game.veritastra.com/player
+  {
+    "jsonrpc"   : "2.0",
+    "id"        : 1,
+    "method"    : "is_name_available",
+    "params"    : { "name" : "Human" }
+  }
+
+B<NOTE:> It is important to make the point here that when you send a POST you are not sending
+URL parameters. You are sending the full POST body. If you format it with parameters like you
+would with a GET method then you will most likely get a parse error from the server.
+
+=head3 Use POST where ever possible
+
+A HTTP POST method is the preferred method of call, the main reason is that a GET method
+is restricted to somewhere between 512 and 2048 characters, but there is no such size limit
+with a POST.
+
+=head2 RESPONSE
+
+Either a POST or a GET will return a response which contains the result or an error message.
+
+=head3 Successful response
+
+  {
+    "jsonrpc"   : "2.0",
+    "id"        : 1,
+    "result"    : 0
+  }
+
+=head3 Error response
+
+  {
+    "jsonrpc"   : "2.0",
+    "id"        : 1,
+    "error"     : {
+        "code"      : 1000,
+        "message"   : "Name not available",
+        "data"      : null
+    }
+  }
+
+
+B<NOTE:> If you get a JSON-RPC error, then the web server will also give you a 500 HTTP error code.
+
+=head1 MODULES
+
+=over
+
+=item L<ErrorCodes>
+
+A List of the error codes that might be returned by calls.
+
+=item L<ApiKeys>
+
+You will need a key to use the API.
+
+=item L<Player>
+
+Methods for account creation.
+
+

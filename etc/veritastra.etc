@@ -1,0 +1,23 @@
+# config-file-type: JSON 1
+{
+    "beanstalk" : {
+        "debug" : 0,
+        "server" : "localhost",
+        "ttr" : 120,
+        "max_timeouts" : 10,
+        "max_reserves" : 10
+    },
+    "db" : {
+        "dsn" : "DBI:mysql:XXXX",
+        "password" : "XXXX",
+        "username" : "XXXX"
+    },
+    "memcached" : [
+        {
+            "host"  : "127.0.0.1",
+            "port"  : "11211"
+        }
+    ],
+    "server_url" : "http://localhost:5000/"
+}
+
