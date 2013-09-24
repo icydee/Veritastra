@@ -1,0 +1,25 @@
+=head1 Notes on the design
+
+=over
+
+Learning from The Lacuna Expanse (TLE) requests from the web browser should
+not indirectly trigger database updates (planet tick, ship arrival etc.). They
+should only do passive reads. Any writes (for example when completing a form
+submission) should be simple writes.
+
+Make more use of Beanstalk queue system to carry out actions scheduled for
+a future time.
+
+Make use of Beanstalk even for actions that are immediate, but might take a fair
+amount of processing. Resulting in a reduced browser lag.
+
+Make use of L<DBIx::Class::Storage::DBI::Replicated> so that we can direct
+database reads to multiple mysql replicated slaves, and only send writes to the master.
+
+
+
+=back
+
+
+=cut
+
