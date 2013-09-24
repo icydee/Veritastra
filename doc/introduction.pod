@@ -1,4 +1,14 @@
-=head1
+=head1 Introduction
 
-Introduction
+The aim of B<Veritastra> is to provide a robust, scalable platform for the generation
+of MMORPGs.
+
+Much of the influence of B<Veritastra> is from The Lacuna Expanse L<http://lacunaexpanse.com>
+which has been a good test-bed for this development.
+
+=head2 Veritastra - the name
+
+The name B<Veritastra> is a compound of the two latin words B<Veritas> and B<Astra> which
+are loosely translated is 'truth' or 'reality' and 'stars'.
+
 
