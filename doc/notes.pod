@@ -5,26 +5,40 @@ tries to rectify these issues.
 
 =over
 
-=item The web browser should not trigger database writes (planet tick, ship arrival etc.).
+=item Browser Reads.
+
+The web browser should not trigger database writes (planet tick, ship arrival etc.).
 When doing a read operation (such as getting the current status).
 Any writes (for example when completing a form submission) should be limited to simple
 updates that can be performed efficiently.
 
-=item Make more use of Beanstalk queue system to carry out actions scheduled for
+=item Future events.
+
+Make more use of Beanstalk queue system to carry out actions scheduled for
 a future time.
 
-=item Make use of Beanstalk even for actions that are immediate, but might take a fair
+=item Immediate costly events.
+
+Make use of Beanstalk even for actions that are immediate, but might take a fair
 amount of processing so resulting in a reduced browser lag.
 
-=item Make use of L<DBIx::Class::Storage::DBI::Replicated> so that we can direct
+=item Database Replication.
+
+Make use of L<DBIx::Class::Storage::DBI::Replicated> so that we can direct
 database reads to multiple mysql replicated slaves, and only send writes to the master.
 
-=item We need to ensure that database writes are wrapped in a transaction
+=item Transactions.
 
-=item Do a little more data normalisation so that resources can be made more 'generic'
+We need to ensure that database writes are wrapped in a transaction
+
+=item Database Normalisation.
+
+Do a little more data normalisation so that resources can be made more 'generic'
 rather than hard-coding them into the database structure (e.g. empire).
 
-=item However don't over-normalise since this will lead to inefficiencies.
+=item Database over Normalisation.
+
+However don't over-normalise since this will lead to inefficiencies.
 
 =back
 
