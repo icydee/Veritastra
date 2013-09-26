@@ -1,4 +1,4 @@
-package RPG::Veritastra::DB::Result::Log::PlayerWith;
+package RPG::Veritastra::TraitFor::DB::Result::Log::Player;
 
 use Moose;
 extends 'RPG::Veritastra::DB::Result::Log';
