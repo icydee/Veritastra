@@ -1,7 +1,7 @@
 package RPG::Veritastra::DB::Result::Log::PlayerNameChange;
 
 use Moose;
-with 'RPG::Veritastra::TraitFor::DB::Result::Log::Player';
+extends 'RPG::Veritastra::DB::Result::Log::Player';
 
 __PACKAGE__->table('log_player_name_change');
 __PACKAGE__->add_columns(

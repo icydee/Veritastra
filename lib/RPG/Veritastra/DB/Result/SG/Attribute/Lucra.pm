@@ -1,7 +1,7 @@
 package RPG::Veritastra::DB::Result::SG::Attribute::Lucra;
 
 use Moose;
-use namespace::autoclean
+use namespace::autoclean;
 
 extends 'RPG::Veritastra::DB::Result::SG::Attribute';
 
@@ -10,4 +10,4 @@ has 'name' => (
     default => 'Lucra',
 );
 
-no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
