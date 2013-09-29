@@ -9,6 +9,7 @@ sub sqlt_deploy_hook {
     my ($self, $sqlt_schema) = @_;
     $sqlt_schema->drop_table('noexist_basetable');
     $sqlt_schema->drop_table('noexist_log');
+    $sqlt_schema->drop_table('noexist_player');
     $sqlt_schema->drop_table('noexist_map');
 }
 

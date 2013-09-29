@@ -8,9 +8,9 @@
         "max_reserves" : 10
     },
     "db" : {
-        "dsn" : "DBI:mysql:XXXX",
-        "password" : "XXXX",
-        "username" : "XXXX"
+        "dsn" : "DBI:mysql:veritastra",
+        "password" : "veritastra",
+        "username" : "veritastra"
     },
     "memcached" : [
         {
