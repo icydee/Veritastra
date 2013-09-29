@@ -11,7 +11,13 @@ useall __PACKAGE__;
 
 our $VERSION = 0.0001;
 
-my $config = Config::JSON->new('/data/Veritastra/etc/veritastra.conf');
+# ENV variable defines the config file
+my $env = 'prod';
+if ($ENV{VERITASTRA_TEST}) {
+    $env = 'test';
+}
+
+my $config = Config::JSON->new("/data/Veritastra/etc/veritastra_$env.conf");
 my $db = RPG::Veritastra::DB->connect(
     $config->get('db/dsn'),
     $config->get('db/username'),

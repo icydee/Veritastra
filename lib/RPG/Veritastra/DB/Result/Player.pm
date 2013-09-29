@@ -23,7 +23,6 @@ sub sqlt_deploy_hook {
     $sqlt_table->add_index(name => 'idx_is_active', fields => ['is_active']);
 }
 
-__PACKAGE__->has_many('attributes', 'RPG::Veritastra::DB::Result::Attribute', 'parent_id');
 
 has current_session => (
     is              => 'rw',

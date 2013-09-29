@@ -15,11 +15,16 @@ __PACKAGE__->set_primary_key('id');
 
 # override default DBIx::Class constructor to set defaults from schema
 sub new {
-    my ($class) = @_;
+    my $class = shift;
     my $self = $class->SUPER::new(@_);
     foreach my $col ($self->result_source->columns) {
         my $default = $self->result_source->column_info($col)->{default_value};
         $self->$col($default) if (defined $default && !defined $self->$col());
+
+        my $redis = $self->result_source->column_info($col)->{redis};
+        if ($redis) {
+            print STDERR "Column ($col) is of type REDIS\n";
+        }
     }
     return $self;
 }
