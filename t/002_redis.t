@@ -7,7 +7,8 @@ use Test::More;
 
 use RPG::Veritastra;
 
-my $db = RPG::Veritastra->db;
+my $db      = RPG::Veritastra->db;
+my $redis   = RPG::Veritastra->redis;
 
 my $player = $db->resultset('SG::Player')->create({
     name                => 'icydee',
@@ -21,5 +22,10 @@ my $player = $db->resultset('SG::Player')->create({
 });
 
 diag $player;
+
+my $lucre = $redis->get('sg:player:redis:'.$player->id);
+is($lucre, 100, 'We have 100 lucre');
+
+
 
 done_testing();
