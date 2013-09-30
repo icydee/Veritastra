@@ -3,8 +3,8 @@ package RPG::Veritastra::Queue;
 use Moose;
 use Beanstalk::Client;
 use Data::Dumper;
-
 use RPG::Veritastra::Queue::Job;
+use namespace::autoclean;
 
 has '_beanstalk' => (
     is          => 'ro',

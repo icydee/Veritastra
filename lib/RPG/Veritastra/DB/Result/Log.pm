@@ -1,6 +1,8 @@
 package RPG::Veritastra::DB::Result::Log;
 
 use Moose;
+use namespace::autoclean;
+
 extends 'RPG::Veritastra::DB::Result';
 
 __PACKAGE__->table('noexist_log');
@@ -12,5 +14,4 @@ sub sqlt_deploy_hook {
     my ($self, $sqlt_table) = @_;
 }
 
-no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

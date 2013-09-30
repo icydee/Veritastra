@@ -1,6 +1,8 @@
 package RPG::Veritastra::RPC::Player;
 
 use Moose;
+use namespace::autoclean;
+
 extends 'RPG::Veritastra::RPC';
 use DateTime;
 
@@ -14,5 +16,4 @@ __PACKAGE__->register_rpc_method_names(
     qw(is_name_available),
 );
 
-no Moose;
 __PACKAGE__->meta->make_immutable;

@@ -1,6 +1,8 @@
 package RPG::Veritastra::DB::Result::Player;
 
 use Moose;
+use namespace::autoclean;
+
 extends 'RPG::Veritastra::DB::Result';
 
 __PACKAGE__->table('noexist_player');
@@ -55,5 +57,4 @@ sub encrypt_password {
     return Digest::SHA::sha256_base64($password);
 }
 
-no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
