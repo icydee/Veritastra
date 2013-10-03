@@ -1,0 +1,10 @@
+Notes to give an indication of the game function. (Not quite a functional Design!)
+
+Influences
+==========
+
+  http://lacunaexpanse.com - Without doubt the most influential influence
+  Facebook games
+    Wartune - Fantasy game with diverse features
+    Edgeworld - Space based game, seems to have been influenced by Lacuna
+    Vega Conflict - Space based game, create ships, mine asteroids, pvp.

@@ -34,8 +34,7 @@ sub delete {
     my ($self, $namespace, $id) = @_;
 
     my $key = $self->namespace_key($namespace, $id);
-
-    xxxxxx
+    return $self->redis->del($key);
 }
 
 # Get a value for a key
@@ -66,20 +65,67 @@ sub get_and_deserialize {
 # Set a value (with optional timeout)
 #
 sub set {
-    my ($self, $namespace, $id, $value, $ttl) = @_;
+    my ($self, $namespace, $id, $value, $expire) = @_;
 
     my $key             = $self->namespace_key($namespace, $id);
     my $frozen_value    = (ref $value) ? JSON::to_json($value) : $value;
-    $self->redis->set($key, $frozen_value);
-    xxxxx
+    my $retval = $self->redis->set($key, $frozen_value);
+    $self->expire($namespace, $id, $expire) if defined $expire;
+    return $retval;
 }
+
+# Set an expiry time
+#
+sub expire {
+    my ($self, $namespace, $id, $expire) = @_;
+
+    return unless defined $expire;
+
+    my $key = $self->namespace_key($namespace, $id);
+    return $self->redis->expire($key, $expire);
+}
+
 
 # Increment a value
 #
 sub incr {
-    my ($self, $namespace, $id, $amount, $ttl) = @_;
+    my ($self, $namespace, $id, $amount, $expire) = @_;
 
-    xxxxx
+    my $key = $self->namespace_key($namespace, $id);
+    my $by = $amount || 1;
+    my $retval = $self->redis->incrby($key, $by);
+    $self->expire($namespace, $id, $expire) if defined $expire;
+    return $retval;
+}
+
+# Decrement a value
+#
+sub decr {
+    my ($self, $namespace, $id, $amount, $expire) = @_;
+
+    my $key = $self->namespace_key($namespace, $id);
+    my $by = $amount || 1;
+    my $retval = $self->redis->decrby($key, $by);
+    $self->expire($namespace, $id, $expire) if defined $expire;
+    return $retval;
+}
+
+# Check the Time To Live
+#
+sub ttl {
+    my ($self, $namespace, $id) = @_;
+
+    my $key = $self->namespace_key($namespace, $id);
+    return $self->ttl($namespace);
+}
+
+# Check if a key exists
+#
+sub exists {
+    my ($self, $namespace, $id) = @_;
+
+    my $key = $self->namespace_key($namespace, $id);
+    return $self->exists($key);
 }
 
 __PACKAGE__->meta->make_immutable;
