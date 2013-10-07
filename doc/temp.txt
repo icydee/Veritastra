@@ -1,0 +1,113 @@
+
+Features to take from Lacuna
+============================
+
+    * The API is open to allow people to create their own client or scripts
+    * Alliances are important, but give more benefits to being in one.
+
+
+    * Resources should be abundent in some places, scarce in others to encourage trade and exploration.
+
+What to change, leave out.
+
+    * Spies. Not sure if there is room for spies, although this is a big plus for TLE, not seen elsewhere.
+    * There are too many ores, too many food types. Have no more than 10 ores, 4 food types.
+
+
+Features to take from Facebook Attack on Vega
+=============================================
+
+    * The ability to interact in real time with an AI player (Vega)
+    * The ability to attack other players bases in real time
+    * Battles can be viewed by anyone as a spectator
+    * Ships are put into fleets
+    * Ships can be fitted out with special equipment to change their rating
+    * Different ships have different abilities
+    * It's nice that cooldown periods can be free subsidy at the start
+
+What to change.
+
+    * The game is wholey? space based. Bases are space stations
+    * There are only four basic resources, more difficult to make them scarce in locations.
+
+
+Design Problem.
+
+Consider where you have a fleet of (say) six ships which are in formation, you can move them to
+location by clicking with your mouse, they will turn, and move to that location, based on their
+designed speed and turning ability.
+
+For the most responsive interface, the calculations and the movement should be done on the client
+side for two main reasons.
+
+  1) If all calculations are done on the server the http request/response delay will make the ship movement sluggish.
+  2) It will put more drain on the server to do these calculations.
+
+In most cases this would be fine, the server determines the ship characteristics and the client
+interpretes those to give smooth control and response.
+
+When we do a battle with an AI then this again could be modelled on the client, the server determines
+the attributes for the AI fleet, the client then emulates the AI actions and sends the location,
+speed and direction back to the server.
+
+The final result of the battle can then be sent to the server to update it's stats.
+
+There are several problems with this.
+
+  1) How do we handle two 'real time' players, each with their own client? The position of one fleet
+     has to be sent to the other player?
+  2) What is there to stop a cheat from sending spurious ship location and direction to the server to
+     get an unfair advantage (dodge incoming missiles, move faster than is possible)?
+
+We need a protocol, or procedure, which eliminates or reduces the chance of cheating in this way
+whilst keeping the server processing and network traffic down to a minimum.
+
+  * All that is sent from the client to the server are the mouse-click events. 'Click on this ship',
+  'Send to this position'.
+
+  * The server keeps track of every ship and every missile, calculates collisions and damage.
+
+  * Periodically the server sends a list of instructions to the client giving a list of all objects,
+  their location, direction, speed, health, duration.
+
+  * The client takes these instructions and smoothly interpretes them, moving the objects as instructed.
+
+  * In the event that a users mouse-click occurs, this will update the server 'state' and a new set
+  of instructions will be sent out to the client.
+
+Consider the example of two opponents, six ships each. We will discuss missiles later.
+
+Each ship has a current location (x,y), a direction, a speed and a health. The client can use this 
+information to display the ship on the screen and, as time progresses, update the position based
+on the direction and speed. With no further information from the server the client could continue
+to update this movement indefinately.
+
+Periodically the client receives new sets of locations from the server and it recalculates the ship
+location, direction, speed and continues to do this indefinately.
+
+This ensures that the client continues to model the state of the server over time, periodically
+getting updates which adjust the ship locations based on (for example) mouse clicks by the user
+or the opponent.
+
+AUTONOMOUS ACTION
+=================
+
+Although there are only six ships in a fleet, trying to control them all individually would require
+excessive mouse clicks, 'move this ship here', 'target this enemy ship', 'fire weapons' etc. leading
+to slow game-play and higher client server communications.
+
+There should be a default which ships continue to do until they are countermanded by the user.
+
+For example, if left to their own devices a fleet would naturally form a formation, move towards
+the enemy, fire at the closest enemy etc.
+
+
+
+
+
+
+
+
+
+
+
