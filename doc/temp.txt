@@ -101,10 +101,134 @@ There should be a default which ships continue to do until they are countermande
 For example, if left to their own devices a fleet would naturally form a formation, move towards
 the enemy, fire at the closest enemy etc.
 
+PROOF OF CONCEPT
+================
+
+We need to prove the concept that we can carry out the calculations on the server and feed them
+to the client fast enough that the client can give the impression of continuous movement without
+being affected by server lag.
+
+The proof of concept will consist of the following.
+
+A 'box' within which are a number of billiard balls (totally elastic collision) with no friction.
+The balls are set in motion, the server calculates the movement of the balls, their velocity,
+direction and collisions and makes this data available to the client.
+
+The client is responsible for taking the information from the server and set the balls in motion,
+at the correct time it will change the direction of balls due to the calculated collision time.
+
+There will be a 'buffer' of instructions from the server giving the description of the ball 
+movements for (say) the next five seconds. When there are only two seconds remaining of calculated
+actions, the client will request the following five seconds of data. Thus the client should always
+have the future movements of all the balls determined.
+
+The server will calculate the movements of the balls from the last time it did the calculation,
+the previous calculations will be cached so that they don't have to be calculated twice in the
+event of an overlap.
+
+There will be no user actions (e.g. mouse clicks ) which will change the behavour of the balls in 
+this test. That can come later.
+
+This proof of concept will allow us to test how continuous the movement of the balls are, and
+how many instances of the page can be supported before there is any server lag.
+
+DATA STRUCTURE
+==============
+
+For each ball we need to calculate the following.
+
+  * Object reference
+  * Start time reference
+  * Initial x position
+  * Initial y position
+  * Direction of movement
+  * Speed of movement
+  * End time reference
+  * Final x position
+  * Final y position
+
+The start and end time references should be the epoch time, accurate to about 100th of a second.
+
+This information should allow the ball to be moved by the client game engine from the initial
+position to the final position.
+
+There will be a set of data for each discrete movement of each object (identified by the Object Reference).
+
+Where an object changes direction (for example by a collision) then there will be another set of
+data which gives the new direction and speed with a start time reference equal to the end time reference
+of the previous set.
+
+The server will report all the changes, for all balls, for the following five seconds.
 
 
+  {
+    data_set : 987,
+    objects : [
+        {
+            id              : 123,
+            start_epoch     : 34,
+            start_x         : -50,
+            start_y         : 45,
+            direction       : 90,
+            speed           : 10,
+            end_epoch       : 135,
+            end_x           : 50,
+            end_y           : 45,
+        },
+        {
+            id              : 124,
+            ...
+        }
+    ]
+  }
 
+The 'data_set' is a unique value used to identify the set of objects so that we can run several browser
+sessions at the same time.
 
+Note: the direction may be un-necessary, we can determine the current position by 'tweening' using the
+start and end positions and the current frame. Only use direction if the game engine makes it easy to do so.
+
+Using epoch time for start and end allows us to synchronise between browsers (assuming each browsers clock
+is correctly set?). May have to look at this in cases where browser time is not set correctly.
+
+If a browser runs slow, then movement will most probably be jerky with the balls 'jumping' to their current
+place.
+
+If the browser runs out of cached objects before a server response is given then everything will 'stop'
+and then jump to the current place when the next set of commands comes from the server.
+
+SERVER ALGORITHM
+================
+
+Request to server to get a new set of data.
+
+  {
+    request         : 'start',
+    seed            : 123,
+  }
+
+The server will respond with a set of data (see above) with a unique data_set number.
+
+When the client is approaching the last two seconds of it's cache, it will make a new request.
+
+  {
+    request         : 'continue',
+    start_epoch     : 55.04,
+    data_set        : 987,
+  }
+
+Typically the client will request a start_epoch equal to the current epoch time of the browser.
+
+When the response is returned from the server the data will replace the existing client cache.
+
+CLIENT ALGORITHM
+================
+
+The client runs a clock tick routine up to 60 times a second.
+
+The client first checks the epoch time and compares it with it's value from the previous clock tick. (or zero if this is the first tick)
+
+When the epoch time 
 
 
 
